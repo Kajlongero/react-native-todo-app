@@ -1,9 +1,10 @@
 import { StyleSheet, View, FlatList, Pressable, Text } from 'react-native';
 import { useGoalStore } from '../stores/useGoalStore';
 import { AddGoal } from '../components/AddGoal';
+import { GoalItem } from './GoalItem';
 
 export const GoalList = () => {
-  const { goalsFiltered, setModalNewGoalOpen } = useGoalStore();
+  const { goals, goalsFiltered, setModalNewGoalOpen } = useGoalStore();
 
   const handleOpenModal = () => setModalNewGoalOpen();
 
@@ -16,16 +17,29 @@ export const GoalList = () => {
       >
         <Text style={styles.addNewGoalButton}>+</Text>
       </Pressable>
+      <Text style={styles.goalListText}>Goal List - Total: {goalsFiltered.length}</Text>
+      {
+        goals.length < 1 && 
+        goalsFiltered.length < 1 && 
+        (
+          <Text style={styles.noTodos}>There is not todos yet</Text>
+        ) 
+      }
+            {
+        goals.length > 0 && 
+        goalsFiltered.length < 1 && 
+        (
+          <Text style={styles.noTodos}>There is not todos by the search keyword</Text>
+        ) 
+      }
       <FlatList 
         data={goalsFiltered}
         keyExtractor={(e) => e.id}
         style={styles.goalsContainerList}
         renderItem={({ item }) => (
-          <View style={{ backgroundColor: 'red' }}>
-            <Text>{item.text}</Text>
-          </View>
+          <GoalItem text={item.text} id={item.id} key={item.id} /> 
         )}
-      />
+        />
     </View>
   )
 }
@@ -42,7 +56,7 @@ const styles = StyleSheet.create({
     height: 64,
     bottom: 20, 
     right: 20,
-    backgroundColor: '#4bc899',
+    backgroundColor: '#000',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 99999,
@@ -59,6 +73,18 @@ const styles = StyleSheet.create({
   },
   goalsContainerList: {
     paddingHorizontal: 12,
-    paddingVertical: 24,
-  }
+    paddingVertical: 4,
+  },
+  goalListText: {
+    paddingTop: 16,
+    paddingLeft: 12,
+    color: '#fff',
+    fontSize: 21,
+  },
+  noTodos: {
+    color: '#aaaaaa',
+    padding: 12,
+    fontSize: 21,
+    fontStyle: 'italic',
+  },
 })

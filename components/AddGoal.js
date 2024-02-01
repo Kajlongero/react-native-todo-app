@@ -8,7 +8,7 @@ export const AddGoal = () => {
   const handleGoalText = (text) => handleNewGoalText(text);
 
   const addGoal = () => {
-    addNewGoal({ id: `${Math.round(Math.random() * 999999999999999 + 1)}`, text: newGoalText });
+    addNewGoal({ id: `${Math.round(Math.random() * 999999999 + 1)}`, text: newGoalText });
     handleNewGoalText('');
     setModalNewGoalOpen();
   }
